@@ -1,7 +1,7 @@
 # ProfileTracker
 
 ## Overview
-Reads a text file containing portfolios of shareholders and displays them in descending order based on their total share value. File contains share names and share count. Value for one share is fetched from alphavantage.com
+Reads a text file containing portfolios of shareholders and displays them in descending order based on their total share value. File contains share names and share count. Value for one share is fetched using API request from alphavantage.com
 
 ## Example
 
