@@ -32,7 +32,7 @@ def getValuForStock(stockName):
 #Get stock value from alphavantage.com
 def getWebStockValue(stockName):
 	#print stockName
-	response = requests.get('https://www.alphavantage.com/query?function=TIME_SERIES_INTRADAY&symbol='+stockName+'&interval=15min&outputsize=compact&apikey='+API_KEY)
+	response = requests.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+stockName+'&interval=15min&outputsize=compact&apikey='+API_KEY)
 	#print 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+stockName+'&interval=15min&outputsize=compact&apikey='+API_KEY
 	try:
 		res = json.loads(response.text)
@@ -93,11 +93,10 @@ def main():
 
 	for items in sortedProfile(stockValueHashMap): print items
 
-class PortfolioTrackerTest(unittest.TestCase):
-    
-	def invalidFilePath(self):
-        self.assertEqual(readFileContent('skjfnasldkfnsd'), [])
 
+class PortfolioTrackerTest(unittest.TestCase):
+	def invalidFilePath(self):
+		self.assertEqual(readFileContent('skjfnasldkfnsd'), [])
 
 if __name__ == '__main__':
 	main()
