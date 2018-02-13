@@ -2,10 +2,22 @@ import sys
 import operator
 import requests
 import json
-import unittest
+import argparse
+
+# pylint: disable=print-statement
 
 API_KEY = 'MAD5VYK9IW353NH2'
 Shares = {}
+
+#Parses the command line arguments 
+def createParser():
+    parser = argparse.ArgumentParser(description="Portfolio Tracker")
+
+    parser.add_argument(
+        '-f','--fileName', type=str, required=True,help="Filename to read portfolios from"
+    )
+
+    return parser
 
 #Method to read file content and return a list
 def readFileContent(filePath):
@@ -18,6 +30,8 @@ def readFileContent(filePath):
 		f.close()
 	except:
 		print "file open error"
+
+	print "Found ", len(fileContent), " profiles\n"
 	return fileContent
 
 #Get value for stock from local or from web
@@ -31,16 +45,14 @@ def getValuForStock(stockName):
 
 #Get stock value from alphavantage.com
 def getWebStockValue(stockName):
-	#print stockName
 	response = requests.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+stockName+'&interval=15min&outputsize=compact&apikey='+API_KEY)
-	#print 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+stockName+'&interval=15min&outputsize=compact&apikey='+API_KEY
 	try:
 		res = json.loads(response.text)
 		timeSeries = res["Time Series (15min)"]
 		stockValue = timeSeries[operator.itemgetter(0)(timeSeries.keys())]["1. open"]
 		print "stock value for "+stockName+": "+str(stockValue)
 	except:
-		stockValue = 0.00
+		stockValue = 10.00
 		print "something went wrong in fetching stock value for "+stockName
 	return float(stockValue)
 
@@ -81,22 +93,16 @@ def sortedProfile(profileMap):
 #Gets file path from command line argument
 #Reads and prints the profiles based on total stock value
 def main():
-	print "\n======Profile Tracker======\n"
-	if len(sys.argv) <= 1:
-		print "#err: Please spicify file path"
-		return
-	filePath = sys.argv[1]
-	profileList = readFileContent(filePath)
-	print "Found ", len(profileList), " profiles\n"
-
+	print "\n======Portfolio Tracker======\n"
+	parser = createParser()
+	args = parser.parse_args()
+	profileList = readFileContent(args.fileName)
 	stockValueHashMap = findStockValues(profileList)
 
 	for items in sortedProfile(stockValueHashMap): print items
 
 
-class PortfolioTrackerTest(unittest.TestCase):
-	def invalidFilePath(self):
-		self.assertEqual(readFileContent('skjfnasldkfnsd'), [])
+
 
 if __name__ == '__main__':
 	main()

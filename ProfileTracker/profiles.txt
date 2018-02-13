@@ -1,3 +1,2 @@
 MS - 10, GOOG - 10
 GOOG - 50, MS - 100
-MS - 20, GOOG - 57
