@@ -1,5 +1,5 @@
 import unittest
-from profileTracker import readFileContent, createParser, sortedProfile
+from profileTracker import readFileContent, createParser, sortedProfile, getWebStockValue
 
 class PortfolioTrackerTest(unittest.TestCase):
 
@@ -23,6 +23,10 @@ class PortfolioTrackerTest(unittest.TestCase):
     def testSortedResult(self):
         sortList = sortedProfile({'0_MS - 10, GOOG - 10':100,'1_GOOG - 50, MS - 100':200,'2_GOOG - 40, MS - 100':150})
         self.assertEqual(sortList, ['GOOG - 50, MS - 100','GOOG - 40, MS - 100','MS - 10, GOOG - 10'])
+
+    def testWebValueStock(self):
+        stockValue = getWebStockValue('MS')
+        self.assertEqual(stockValue, 53.0200)
 
 if __name__ == '__main__':
     unittest.main()
